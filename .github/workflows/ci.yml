@@ -1,0 +1,29 @@
+# .github/workflows/ci.yml
+
+name: CI/CD Pipeline for ML Model Training
+
+# Wykonuj akcje przy każdym pushu do gałęzi main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run_python_script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Check installed packages
+        run: pip freeze
+
+      - name: Run my script
+        run: python s22402.py
+
+      - name: Read model_evaluation
+        run: |
+          cat model_evaluation.txt

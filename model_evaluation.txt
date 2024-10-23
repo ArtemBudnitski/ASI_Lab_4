@@ -1,0 +1,7 @@
+Wyniki przed optymalizacją:
+Regresja Gradient Boosting (bez optymalizacji) - R²: 0.3671374809985316
+Random Forest (bez optymalizacji) - R²: 0.2920332637689843
+
+Wyniki po optymalizacji:
+Regresja Gradient Boosting (po optymalizacji) - R²: 0.3667212722451061
+Random Forest (po optymalizacji) - R²: 0.35129947854646715
