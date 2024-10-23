@@ -1,3 +1,5 @@
+## Dokumentacja jest dostępna pod nazwą: Documentation.pdf
+
 https://vincentarelbundock.github.io/Rdatasets/csv/AER/CollegeDistance.csv
 
 Proszę o wykorzystanie już zdobytej wiedzy i zautomatyzowanie procesów w GitHub Action.
