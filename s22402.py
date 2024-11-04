@@ -4,6 +4,11 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+import joblib
+import pickle
+import skl2onnx
+from skl2onnx import convert_sklearn
+from skl2onnx.common.data_types import FloatTensorType
 
 # Wczytanie danych
 file_path = 'CollegeDistance.csv'  # Zamień na odpowiednią ścieżkę
@@ -116,11 +121,21 @@ print(grid_search_rf.best_params_)
 # Ocena najlepszego modelu Random Forest
 evaluate_model(best_rf, X_test, y_test, 'Random Forest (po optymalizacji)')
 
+
 # Porównanie wyników przed i po optymalizacji
 print(f"Regresja Gradient Boosting (bez optymalizacji) - R²: {r2_score(y_test, gbr.predict(X_test))}")
 print(f"Regresja Gradient Boosting (po optymalizacji) - R²: {r2_score(y_test, best_gbr.predict(X_test))}")
 print(f"Random Forest (bez optymalizacji) - R²: {r2_score(y_test, rf.predict(X_test))}")
 print(f"Random Forest (po optymalizacji) - R²: {r2_score(y_test, best_rf.predict(X_test))}")
+
+initial_type = [('float_input', FloatTensorType([None, X_train.shape[1]]))]
+
+# Konwersja modelu do formatu ONNX
+onnx_model = convert_sklearn(best_gbr, initial_types=initial_type)
+
+# Zapisanie modelu ONNX
+with open("best_model.onnx", "wb") as f:
+    f.write(onnx_model.SerializeToString())
 
 with open('model_evaluation.txt', 'w') as f:
     f.write("Wyniki przed optymalizacją:\n")

@@ -1,4 +1,6 @@
-## Dokumentacja jest dostępna pod nazwą: Documentation.pdf
+## Dokumentacja dla Lab4 jest dostępna pod nazwą: Documentation_Lab4.pdf, a plik main.py zawiera skrypt dla tworzenia modelu.
+
+
 
 https://vincentarelbundock.github.io/Rdatasets/csv/AER/CollegeDistance.csv
 

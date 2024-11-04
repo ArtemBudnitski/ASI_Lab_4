@@ -5,3 +5,11 @@ pandas~=2.2.3
 matplotlib~=3.9.2
 fpdf~=1.7.2
 seaborn
+joblib
+fastapi
+pydantic
+pickles
+onnxmltools
+onnxruntime
+skl2onnx
+uvicorn==0.22.0
