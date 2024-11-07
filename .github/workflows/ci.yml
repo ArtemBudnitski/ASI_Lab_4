@@ -9,23 +9,21 @@ on:
       - main
 
 jobs:
-  run_python_script:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-      - run: python -m pip install --upgrade pip && pip install -r requirements.txt
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: artemik007
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Check installed packages
-        run: pip freeze
+    - name: Build Docker image
+      run: docker build -t artemik007/analizator_wynikow_s22402_lab4 .
 
-      - name: Run my script
-        run: python s22402.py
-
-      - name: Read model_evaluation
-        run: |
-          cat model_evaluation.txt
+    - name: Push Docker image
+      run: docker push artemik007/analizator_wynikow_s22402_lab4

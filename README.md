@@ -1,40 +1,193 @@
-## Dokumentacja dla Lab4 jest dostępna pod nazwą: Documentation_Lab4.pdf, a plik main.py zawiera skrypt dla tworzenia modelu.
+# Analizator Wyników s22402 - Dokumentacja
 
+## 1. Opis projektu
 
+Analizator Wyników to aplikacja FastAPI, która wykorzystuje model uczenia maszynowego do przewidywania wyników na podstawie danych wejściowych. Model został opublikowany w kontenerze Docker, co umożliwia łatwe wdrożenie i użytkowanie aplikacji. Obraz jest dostępny na Docker Hub.
 
-https://vincentarelbundock.github.io/Rdatasets/csv/AER/CollegeDistance.csv
+---
 
-Proszę o wykorzystanie już zdobytej wiedzy i zautomatyzowanie procesów w GitHub Action.
+## 2. Klonowanie repozytorium
 
-# Lab3-Analizator_wynikow
-Zadanie 1: Budowa modelu predykcyjnego (20 punktów)
-Cel:
-Na podstawie dostarczonego datasetu studenci mają za zadanie zbudować model predykcyjny, który będzie przewidywał zmienną score. Powinni wybrać odpowiedni algorytm, przeprowadzić analizę danych i ocenić jakość modelu. Do całej pracy ma zostać stworzona dokumentacja, może być w formie Readme.pdf i tam zamieszczone wykresy, albo można użyć bardziej profesjonalnego oprogramowania do tworzenia dokumentacji IT.
+Aby uzyskać dostęp do kodu projektu i wszystkich plików:
 
-Etapy:
-Eksploracja i wstępna analiza danych (5 punktów)
+1. Otwórz terminal lub wiersz poleceń.
+2. Wykonaj poniższą komendę, aby skopiować repozytorium do lokalnego folderu:
 
-Wczytanie i zapoznanie się z danymi.
-Sprawdzenie brakujących wartości oraz ich odpowiednia obsługa (np. imputacja lub usunięcie).
-Analiza statystyczna zmiennych.
-Ocena: 5 punktów za pełną eksplorację danych, w tym wykresy i opisy zmiennych.
+   ```bash
+   git clone https://github.com/ArtemBudnitski/ASI_Lab_4.git
+   cd ASI_Lab_4
+   ```
 
-Inżynieria cech i przygotowanie danych (5 punktów)
+---
 
-Przeprowadzenie odpowiedniej inżynierii cech (np. kategoryzacja, standaryzacja, normalizacja, tworzenie nowych zmiennych, jeśli konieczne).
-Podział danych na zbiór treningowy i testowy.
-Ocena: 5 punktów za poprawne przygotowanie danych, z wyjaśnieniem wszystkich kroków.
+## 3. Uruchamianie aplikacji lokalnie
 
-Wybór i trenowanie modelu (5 punktów)
+Jeśli chcesz uruchomić aplikację na lokalnym serwerze, wykonaj poniższe kroki.
 
-Wybór odpowiedniego algorytmu (np. regresja liniowa, lasy losowe, regresja logistyczna, sieci neuronowe itp.).
-Wytrenowanie modelu na zbiorze treningowym.
-Wyjaśnienie, dlaczego wybrano dany model.
-Ocena: 5 punktów za wybór odpowiedniego modelu i poprawne przeszkolenie modelu.
+### Krok 1: Utworzenie i aktywacja środowiska wirtualnego (opcjonalnie)
 
-Ocena i optymalizacja modelu (5 punktów)
+Aby zapewnić izolację zależności:
 
-Ocena jakości modelu na zbiorze testowym (np. przy użyciu metryk takich jak R², MAE, MSE).
-Jeśli wyniki nie są satysfakcjonujące, należy przeprowadzić optymalizację (np. tunowanie hiperparametrów, walidacja krzyżowa).
-Ocena: 5 punktów za ocenę modelu i ewentualną optymalizację.
+Utwórz środowisko wirtualne:
 
+```bash
+python3 -m venv venv
+```
+
+Aktywuj środowisko:
+
+- **Linux / macOS**:
+  ```bash
+  source venv/bin/activate
+  ```
+
+### Krok 2: Instalacja zależności
+
+Zainstaluj wszystkie wymagane pakiety z pliku `requirements.txt`:
+
+```bash
+pip install -r requirements.txt
+```
+
+### Krok 3: Uruchomienie serwera FastAPI
+
+Aby uruchomić serwer Uvicorn:
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port 8000
+```
+
+Po uruchomieniu serwera aplikacja będzie dostępna pod adresem [http://localhost:8000](http://localhost:8000).
+
+---
+
+## 4. Uruchamianie aplikacji za pomocą Dockera
+
+Aplikacja jest skonteneryzowana, co pozwala na uruchomienie jej w Dockerze.
+
+### Budowanie obrazu Docker (lokalnie)
+
+Jeśli chcesz zbudować obraz Docker na podstawie `Dockerfile`:
+
+```bash
+docker build -t analizator_wynikow_s22402_lab4 .
+```
+
+### Uruchomienie kontenera lokalnie
+
+Po zbudowaniu obrazu możesz uruchomić kontener Docker:
+
+```bash
+docker run -p 8000:8000 analizator_wynikow_s22402_lab4
+```
+
+Aplikacja będzie dostępna pod adresem [http://localhost:8000](http://localhost:8000).
+
+---
+
+## 5. Korzystanie z obrazu Docker na Docker Hub
+
+Obraz aplikacji jest dostępny na Docker Hub, co pozwala na pobranie i uruchomienie go bezpośrednio z repozytorium.
+
+### Krok 1: Pobierz obraz
+
+Aby pobrać obraz z Docker Hub:
+
+```bash
+docker pull artemik007/analizator_wynikow_s22402_lab4
+```
+
+### Krok 2: Uruchom obraz
+
+Aby uruchomić pobrany obraz:
+
+```bash
+docker run -p 8000:8000 artemik007/analizator_wynikow_s22402_lab4
+```
+
+Aplikacja będzie dostępna pod adresem [http://localhost:8000](http://localhost:8000).
+
+---
+
+## 6. Korzystanie z API
+
+Po uruchomieniu aplikacji (lokalnie lub w Dockerze) możesz uzyskać dostęp do endpointu `/predict`, który umożliwia przewidywanie wyniku na podstawie danych wejściowych.
+
+### Endpoint
+
+- **Metoda HTTP**: `POST`
+- **URL**: `/predict`
+- **Opis**: Endpoint przyjmuje dane wejściowe w formacie JSON i zwraca przewidywaną wartość `score`.
+
+### Przykładowe dane wejściowe
+
+API przyjmuje dane wejściowe w formacie **JSON**. Wymagane pola to:
+
+- `unemp`: Wskaźnik bezrobocia (typ: liczba zmiennoprzecinkowa)
+- `wage`: Średnie wynagrodzenie (typ: liczba zmiennoprzecinkowa)
+- `distance`: Odległość (typ: liczba zmiennoprzecinkowa)
+- `tuition`: Koszt nauki (typ: liczba zmiennoprzecinkowa)
+- `education`: Poziom edukacji (typ: liczba zmiennoprzecinkowa)
+
+**Przykładowe dane wejściowe JSON**:
+
+```json
+{
+  "unemp": 5.2,
+  "wage": 7.5,
+  "distance": 10.3,
+  "tuition": 2000.0,
+  "education": 3.0
+}
+```
+
+### Przesyłanie danych do API
+
+#### Curl
+
+Możesz użyć polecenia `curl` w terminalu, aby wysłać żądanie POST do API z danymi w formacie JSON.
+
+```bash
+curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -d '{"unemp": 5.2, "wage": 7.5, "distance": 10.3, "tuition": 2000.0, "education": 3.0}'
+```
+
+#### Postman
+
+Możesz użyć narzędzia Postman, aby przetestować API.
+
+1. Otwórz Postmana i utwórz nowe żądanie.
+2. Ustaw metodę na `POST` i URL na `http://localhost:8000/predict`.
+3. Przejdź do zakładki **Body**, wybierz **raw** i ustaw typ na **JSON**.
+4. Wklej przykładowe dane wejściowe JSON i kliknij **Send**.
+
+### Przykładowa odpowiedź
+
+Po przesłaniu poprawnych danych aplikacja zwróci przewidywany wynik w formacie JSON:
+
+```json
+{
+  "predicted_score": 85.4
+}
+```
+
+--- 
+
+**Przykładowe dane wejściowe i odpowiedź z aplikacji Postman:**
+
+1. **Dane wejściowe**:
+   ```json
+   {
+     "unemp": 5.2,
+     "wage": 7.5,
+     "distance": 10.3,
+     "tuition": 2000.0,
+     "education": 3.0
+   }
+   ```
+
+2. **Odpowiedź**:
+   ```json
+   {
+     "predicted_score": 85.4
+   }
+   ```
