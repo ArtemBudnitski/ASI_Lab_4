@@ -27,3 +27,6 @@ jobs:
 
     - name: Push Docker image
       run: docker push artemik007/analizator_wynikow_s22402_lab4
+
+    - name: ls
+      run: ls -A
